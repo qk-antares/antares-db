@@ -5,8 +5,8 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import com.antares.db.backend.common.Error;
 import com.antares.db.backend.utils.Panic;
+import com.antares.db.common.Error;
 
 /*
  * 是无辜那里其TransactionManager维护一个XID格式的文件，用来记录各个事务的状态
@@ -56,7 +56,7 @@ public interface TransactionManager {
         return new TransactionManagerImpl(raf, fc);
     }
 
-    public static TransactionManager open(String path) {
+    public static TransactionManagerImpl open(String path) {
         File f = new File(path + TransactionManagerImpl.XID_SUFFIX);
         if(!f.exists()) {
             Panic.panic(Error.FileNotExistsException);

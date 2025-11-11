@@ -6,9 +6,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.antares.db.backend.common.Error;
 import com.antares.db.backend.utils.Panic;
 import com.antares.db.backend.utils.Parser;
+import com.antares.db.common.Error;
 
 public class TransactionManagerImpl implements TransactionManager {
 

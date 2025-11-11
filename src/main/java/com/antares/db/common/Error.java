@@ -1,4 +1,4 @@
-package com.antares.db.backend.common;
+package com.antares.db.common;
 
 public class Error {
     // common
