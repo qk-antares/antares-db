@@ -172,12 +172,12 @@ public class LoggerImpl implements Logger {
         try {
             fc.position(fc.size());
             fc.write(buf);
+            updateXChecksum(log);
         } catch (IOException e) {
             Panic.panic(e);
         } finally {
             lock.unlock();
         }
-        updateXChecksum(log);
     }
 
     private byte[] wrapLog(byte[] data) {

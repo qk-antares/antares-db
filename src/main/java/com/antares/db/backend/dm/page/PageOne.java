@@ -22,6 +22,10 @@ public class PageOne {
         return raw;
     }
 
+    /**
+     * 在db启动时，设置100~107字节的随机值
+     * @param pg
+     */
     public static void setVcOpen(Page pg) {
         pg.setDirty(true);
         setVcOpen(pg.getData());

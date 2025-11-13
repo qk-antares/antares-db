@@ -12,7 +12,7 @@ public abstract class AbstractCache<T> {
     private HashMap<Long, Integer> references; // 引用计数
     private HashMap<Long, Boolean> getting; // 正在被获取的数据
 
-    private int maxResource; // 最大缓存资源数
+    private int maxResource; // 最大缓存资源数（当maxResource=0时表示无限制）
     private int count = 0; // 当前缓存资源数
     private Lock lock;
 
@@ -48,7 +48,7 @@ public abstract class AbstractCache<T> {
             }
 
             // 缓存未命中
-            // 缓存已满
+            // 缓存已满（当maxResource=0时表示无限制）
             if (maxResource > 0 && count == maxResource) {
                 lock.unlock();
                 throw Error.CacheFullException;

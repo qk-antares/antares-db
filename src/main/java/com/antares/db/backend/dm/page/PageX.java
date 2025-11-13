@@ -28,6 +28,9 @@ public class PageX {
         System.arraycopy(Parser.short2Byte(ofData), 0, raw, OF_FREE, OF_DATA);
     }
 
+    /*
+     * 读取页数据前两个字节，获取空闲指针
+     */
     public static short getFSO(Page pg) {
         return getFSO(pg.getData());
     }
@@ -42,13 +45,13 @@ public class PageX {
     /*
      * 将raw插入pg中，返回插入位置的偏移量
      * 
-     * TODO: raw长度不能超过页中剩余的空闲空间
+     * TODO: raw长度不能超过页中剩余的空闲空间(DataManagerImpl中调用时保证)
      */
     public static short insert(Page pg, byte[] raw) {
         pg.setDirty(true);
         short offset = getFSO(pg.getData());
         System.arraycopy(raw, 0, pg.getData(), offset, raw.length);
-        setFSO(pg.getData(), (short)(offset + raw.length));
+        setFSO(pg.getData(), (short) (offset + raw.length));
         return offset;
     }
 
@@ -73,8 +76,8 @@ public class PageX {
         System.arraycopy(raw, 0, pg.getData(), offset, raw.length);
 
         short rawFSO = getFSO(pg.getData());
-        if(rawFSO < offset + raw.length) {
-            setFSO(pg.getData(), (short)(offset + raw.length));
+        if (rawFSO < offset + raw.length) {
+            setFSO(pg.getData(), (short) (offset + raw.length));
         }
     }
 

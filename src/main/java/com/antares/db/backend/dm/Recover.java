@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.antares.db.backend.common.SubArray;
 import com.antares.db.backend.dm.dateItem.DataItem;
 import com.antares.db.backend.dm.logger.Logger;
 import com.antares.db.backend.dm.page.Page;
@@ -14,6 +15,7 @@ import com.antares.db.backend.dm.pageCache.PageCache;
 import com.antares.db.backend.tm.TransactionManager;
 import com.antares.db.backend.utils.Panic;
 import com.antares.db.backend.utils.Parser;
+import com.google.common.primitives.Bytes;
 
 /**
  * 每一条日志的格式：
@@ -184,6 +186,12 @@ public class Recover {
         }
     }
 
+    /**
+     * 执行insert日志的redo或undo操作
+     * @param pc
+     * @param log
+     * @param flag
+     */
     private static void doInsertLog(PageCache pc, byte[] log, int flag) {
         InsertLogInfo li = parseInsertLog(log);
         Page pg = null;
@@ -203,6 +211,12 @@ public class Recover {
         }
     }
 
+    /**
+     * 执行update日志的redo或undo操作
+     * @param pc
+     * @param log
+     * @param flag
+     */
     private static void doUpdateLog(PageCache pc, byte[] log, int flag) {
         UpdateLogInfo li = parseUpdateLog(log);      
         int pgno = li.pgno;
@@ -228,4 +242,27 @@ public class Recover {
         }
     }
 
+    /**
+     * 生成一条insert日志的byte数组
+     */
+    public static byte[] insertLog(long xid, Page pg, byte[] raw) {
+        byte[] logTypeRaw = {LOG_TYPE_INSERT};
+        byte[] xidRaw = Parser.long2Byte(xid);
+        byte[] pgnoRaw = Parser.int2Byte(pg.getPageNumber());
+        byte[] offsetRaw = Parser.short2Byte(PageX.getFSO(pg));
+        return Bytes.concat(logTypeRaw, xidRaw, pgnoRaw, offsetRaw, raw);
+    }
+
+    /**
+     * 生成一条update日志的byte数组
+     */
+    public static byte[] updateLog(long xid, DataItem di) {
+        byte[] logType = {LOG_TYPE_UPDATE};
+        byte[] xidRaw = Parser.long2Byte(xid);
+        byte[] uidRaw = Parser.long2Byte(di.getUid());
+        byte[] oldRaw = di.getOldRaw();
+        SubArray raw = di.getRaw();
+        byte[] newRaw = Arrays.copyOfRange(raw.raw, raw.start, raw.end);
+        return Bytes.concat(logType, xidRaw, uidRaw, oldRaw, newRaw);
+    }
 }
