@@ -78,7 +78,7 @@ public class DataManagerImpl extends AbstractCache<DataItem> implements DataMana
     // region DataManager
     /**
      * 根据uid获取缓存中的DataItem
-     * uid: [pgno(4)][空位(2)[offset(2)]]
+     * uid: [pgno(4)][空位(2)][offset(2)]
      */
     @Override
     public DataItem read(long uid) throws Exception {
