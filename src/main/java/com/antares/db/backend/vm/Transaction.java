@@ -18,7 +18,7 @@ public class Transaction {
     /**
      * 创建一个新的事务对象
      * @param xid
-     * @param level TODO 事务隔离级别如何定义的
+     * @param level 事务隔离级别
      * @param active 当前活跃事务
      * @return
      */
