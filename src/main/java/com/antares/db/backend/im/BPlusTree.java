@@ -22,11 +22,13 @@ public class BPlusTree {
     Lock bootLock;
 
     /**
-     * 创建B+树索引
+     * 创建B+树索引，返回bootUid(bootUid对应的DataItem中存储rootUid)
      */
     public static long create(DataManager dm) throws Exception {
+        // 空的root节点
         byte[] rawRoot = Node.newNilRootRaw();
         long rootUid = dm.insert(TransactionManagerImpl.SUPER_XID, rawRoot);
+        // 返回bootUid
         return dm.insert(TransactionManagerImpl.SUPER_XID, Parser.long2Byte(rootUid));
     }
 
@@ -140,6 +142,12 @@ public class BPlusTree {
     // endregion
 
     // region insert
+    /**
+     * 插入uid-key到B+树中(从root节点开始)
+     * @param key
+     * @param uid
+     * @throws Exception
+     */
     public void insert(long key, long uid) throws Exception {
         long rootUid = rootUid();
         InsertRes res = insert(rootUid, uid, key);
