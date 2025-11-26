@@ -1,5 +1,6 @@
 package com.antares.db.backend.tbm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class TableManagerImpl implements TableManager {
             updateFirstTableUid(table.uid);
             tableCache.put(create.tableName, table);
             if (!xidTableCache.containsKey(xid)) {
-                xidTableCache.put(xid, new java.util.ArrayList<>());
+                xidTableCache.put(xid, new ArrayList<>());
             }
             xidTableCache.get(xid).add(table);
             return ("create " + create.tableName).getBytes();

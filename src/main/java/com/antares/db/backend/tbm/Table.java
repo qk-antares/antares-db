@@ -1,5 +1,6 @@
 package com.antares.db.backend.tbm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class Table {
     long uid;
     String name; // 表名
     long nextUid; // 下一个表的uid
-    List<Field> fields; // 字段列表
+    List<Field> fields = new ArrayList<>(); // 字段列表
 
     public Table(TableManager tbm, long uid) {
         this.tbm = tbm;
@@ -237,7 +238,6 @@ public class Table {
             l0 = res.l0;
             r0 = res.r0;
             l1 = res.l1;
-            ;
             r1 = res.r1;
             single = res.single;
         }
