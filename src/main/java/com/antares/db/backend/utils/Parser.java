@@ -1,6 +1,9 @@
 package com.antares.db.backend.utils;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+
+import com.google.common.primitives.Bytes;
 
 public class Parser {
     public static byte[] short2Byte(short value) {
@@ -28,5 +31,30 @@ public class Parser {
 
     public static byte[] long2Byte(long value) {
         return ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(value).array();
+    }
+
+    public static ParseStringRes parseString(byte[] buf) {
+        int length = parseInt(Arrays.copyOf(buf, 4));
+        String str = new String(buf, 4, length);
+        return new ParseStringRes(str, 4 + length);
+    }
+
+    public static byte[] string2Byte(String str) {
+        byte[] l = int2Byte(str.length());
+        return Bytes.concat(l, str.getBytes());
+    }
+
+    /**
+     * 字符串转long类型的uid
+     * @param key
+     * @return
+     */
+    public static long str2Uid(String key) {
+        long seed = 13331;
+        long res = 0;
+        for (byte b : key.getBytes()) {
+            res = res * seed + (long) b;
+        }
+        return res;
     }
 }

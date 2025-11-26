@@ -15,6 +15,9 @@ import com.antares.db.backend.im.Node.SearchNextRes;
 import com.antares.db.backend.tm.TransactionManagerImpl;
 import com.antares.db.backend.utils.Parser;
 
+/**
+ * 聚簇索引，叶子指向完整记录
+ */
 public class BPlusTree {
     DataManager dm;
     long bootUid;
